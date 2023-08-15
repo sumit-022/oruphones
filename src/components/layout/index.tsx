@@ -11,7 +11,6 @@ interface LayoutProps {
 }
 
 const Layout = ({ children, user, className }: LayoutProps) => {
-  const 
   return (
     <div className="flex h-screen overflow-y-hidden">
       <Sidebar user={user} />
