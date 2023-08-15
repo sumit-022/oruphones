@@ -8,7 +8,7 @@ const Skills: React.FC<DashboardInfoType> = ({ user, setOpened }) => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <p className="text-[#1E2875] font-[500] text-lg">Skills</p>
-          <Button onClick={() => setOpened({ state: true, type: "skills" })}>
+          <Button onClick={() => setOpened?.({ state: true, type: "skills" })}>
             Edit
           </Button>
         </div>

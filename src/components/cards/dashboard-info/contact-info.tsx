@@ -9,17 +9,17 @@ const ContactInfo: React.FC<DashboardInfoType> = ({ user, setOpened }) => {
         <ContactField
           fieldName="Your Name"
           fieldValue={`${user.firstName} ${user.lastName}`}
-          onEdit={() => setOpened({ state: true, type: "name" })}
+          onEdit={() => setOpened?.({ state: true, type: "name" })}
         />
         <ContactField
           fieldName="Email"
           fieldValue={user.email}
-          onEdit={() => setOpened({ state: true, type: "email" })}
+          onEdit={() => setOpened?.({ state: true, type: "email" })}
         />
         <ContactField
           fieldName="Phone Number"
           fieldValue={`+91 ${user.phone}`}
-          onEdit={() => setOpened({ state: true, type: "phone" })}
+          onEdit={() => setOpened?.({ state: true, type: "phone" })}
         />
       </div>
     </DashboardInfo>

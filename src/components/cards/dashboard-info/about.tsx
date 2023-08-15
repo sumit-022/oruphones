@@ -10,7 +10,7 @@ const About: React.FC<DashboardInfoType> = ({ user, setOpened }) => {
           <h2 className="text-black font-semibold">
             About <span className="text-[#413B89]">{user.firstName}</span>
           </h2>
-          <Button onClick={() => setOpened({ state: true, type: "about" })}>
+          <Button onClick={() => setOpened?.({ state: true, type: "about" })}>
             Edit
           </Button>
         </div>
