@@ -1,6 +1,12 @@
-import jsonwebtoken from "jsonwebtoken";
+import * as jwt from 'jsonwebtoken'
 import { User } from "../../models/user";
 import { NextApiRequest, NextApiResponse } from "next";
+
+declare module "jsonwebtoken" {
+  export interface JwtPayload {
+      id: string;
+  }
+}
 
 export default async function ShowUser(
   req: NextApiRequest,
@@ -16,7 +22,8 @@ export default async function ShowUser(
             .status(401)
             .json({ message: "Unauthorized", success: false });
         }
-        const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET!);
+        const decoded =<jwt.JwtPayload>jwt.verify(token, process.env.JWT_SECRET!);
+
         const user = await User.findOne({ _id: decoded.id });
         return res
           .status(200)

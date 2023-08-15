@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { dbConnect } from "@/utils/db/connect";
 import { User } from "@/models/user";
 import Cookies from "js-cookie";
+
 export default async function Login(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
   const { method } = req;
