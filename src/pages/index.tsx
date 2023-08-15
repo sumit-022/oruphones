@@ -17,14 +17,17 @@ const HomePage = () => {
   if (loading) return <div>Loading...</div>;
   else if (user)
     return (
-      <Layout user={user} className={clsx(path == "profile" ? "p-0" : "px-2 pb-5")}>
+      <Layout
+        user={user}
+        className={clsx(path == "profile" ? "p-0" : "px-2 pb-5")}
+      >
         {path === "profile" && <ProfileTemplate user={user} />}
         {path === "connections" && <ConnectionView />}
       </Layout>
     );
   else {
     router.push("/auth/login");
-    return <div>Redirecting...</div>;
+    return <div></div>;
   }
 };
 

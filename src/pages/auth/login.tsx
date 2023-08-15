@@ -18,9 +18,11 @@ const Login = () => {
     try {
       const res = await axios.post("/api/login", user);
       if (res.data.success) {
-        setAuthState(true);
-        router.push("/");
         Cookies.set("token", res.data.token);
+        setAuthState(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 500);
       } else {
         setError(res.data);
       }
