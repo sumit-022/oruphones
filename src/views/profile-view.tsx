@@ -36,6 +36,25 @@ const ProfileTemplate: React.FC<ProfileTemplateType> = ({ user }) => {
     about: user?.about,
   });
   const [opened, setOpened] = React.useState({ state: false, type: "" });
+  const [image, setImage] = React.useState<File | null>(null);
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    formData.append("image", image!);
+    try {
+      const res = await axios.post("/api/user/upload", image);
+      console.log(res.data);
+      setUpdateState((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImage(e.target.files[0]);
+      handleImageUpload();
+    }
+  };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -66,14 +85,24 @@ const ProfileTemplate: React.FC<ProfileTemplateType> = ({ user }) => {
   };
 
   return (
-    <div className="h-[20%] w-11/12 rounded-md relative mt-4 bg-[#1E2875]">
+    <div className="h-[20%] md:m-0 mx-auto w-11/12 rounded-md relative mt-4 bg-[#1E2875]">
       <p className="text-white uppercase p-2">My Profile</p>
       <div className="absolute bg-white p-4 w-[90%] rounded-md top-2/3 left-1/2 transform -translate-x-1/2">
         <div className="grid lg:grid-cols-2 lg:grid-rows-1 grid-cols-1 grid-rows-2 lg:gap-8">
           <div>
             <div className="flex items-center justify-between py-3">
               <Image src={profile} alt="profile" className="rounded-full" />
-              <Button>Upload Photo</Button>
+              <label htmlFor="image">
+                <div className="bg-primary-buttongrey cursor-pointer text-text-blue-600 py-1 px-6 font-sans text-xs font-semibold rounded-full">
+                  Upload Photo
+                </div>
+              </label>
+              <input
+                type="file"
+                className="sr-only"
+                id="image"
+                onChange={handleImageChange}
+              />
             </div>
             <ContactInfo user={user} setOpened={setOpened} />
             <About user={user} setOpened={setOpened} />
@@ -117,8 +146,8 @@ const ProfileTemplate: React.FC<ProfileTemplateType> = ({ user }) => {
                   : "Phone"
               }
               onChange={
-                opened.type === "skills"
-                  ? handleSkillsChange : handleEditChange}
+                opened.type === "skills" ? handleSkillsChange : handleEditChange
+              }
               value={
                 opened.type === "name"
                   ? editUser.name

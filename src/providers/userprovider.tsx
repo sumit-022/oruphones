@@ -39,14 +39,13 @@ export const AccountProvider = ({
       })
       .then((res) => {
         if (res.data.success) {
-
           setUser(res.data.user);
         } else {
-          setUser(null);
+          res.data.message === "Unauthorized";
         }
       })
       .catch((err) => {
-        console.log(err);
+        err.response.data.message === "Unauthorized";
       })
       .finally(() => {
         setLoading(false);

@@ -7,7 +7,7 @@ import { useAccount } from "@/providers/userprovider";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
-  const [error, setError] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { setAuthState } = useAccount();
@@ -24,10 +24,10 @@ const Login = () => {
           router.push("/");
         }, 500);
       } else {
-        setError(res.data);
+        setError(res.data.message);
       }
     } catch (error: any) {
-      console.log(error);
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -35,12 +35,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user.email.length > 0 && user.password.length > 0) {
-      setError({ email: "", password: "" });
+      setError("");
     } else {
-      setError({
-        email: "Email is required",
-        password: "Password is required",
-      });
+      setError("Please fill all the fields");
     }
   }, [user]);
 
@@ -74,6 +71,7 @@ const Login = () => {
           <Button type="submit" className="w-full py-3 text-white bg-[#1E2875]">
             Login
           </Button>
+          {error && <p className="text-red-500">{error}</p>}
         </form>
       </div>
     </div>
