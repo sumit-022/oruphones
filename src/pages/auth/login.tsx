@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAccount } from "@/providers/userprovider";
+import Link from "next/link";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -72,6 +73,12 @@ const Login = () => {
             Login
           </Button>
           {error && <p className="text-red-500">{error}</p>}
+          <p className="text-gray-400">
+            New User?{" "}
+            <Link className="text-black underline" href={"/auth/register"}>
+              Register
+            </Link>
+          </p>
         </form>
       </div>
     </div>

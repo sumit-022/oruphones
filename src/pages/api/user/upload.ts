@@ -1,24 +1,25 @@
 import cloudinary from "@/config/cloudinary.config";
 import { NextApiRequest, NextApiResponse } from "next";
+import multer from "multer";
 
-export default async function Handler(
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req;
+  if (req.method === "POST") {
+    try {
+      console.log("Req", req);
 
-  switch (method) {
-    case "POST":
-      try {
-        const { file } = req.body;
-        const uploaded = await cloudinary.uploader.upload(file);
-        res.status(200).json(uploaded);
-      } catch (error) {
-        res.status(500).json({ error });
-      }
-      break;
-    default:
-      res.setHeader("Allow", ["POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      const { file } = req.body;
+      const result = await cloudinary.uploader.upload(file, {
+        upload_preset: "af4pgk3a",
+      });
+      res.status(200).json({ result });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import profile from "../assets/svg/profile-rounded.svg";
 import Button from "@/components/atoms/button/action-button";
@@ -38,21 +38,30 @@ const ProfileTemplate: React.FC<ProfileTemplateType> = ({ user }) => {
   const [opened, setOpened] = React.useState({ state: false, type: "" });
   const [image, setImage] = React.useState<File | null>(null);
 
-  const handleImageUpload = async () => {
-    const formData = new FormData();
-    formData.append("image", image!);
-    try {
-      const res = await axios.post("/api/user/upload", image);
-      console.log(res.data);
-      setUpdateState((prev) => !prev);
-    } catch (error) {
-      console.log(error);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target?.files?.[0];
+
+    if (file) {
+      setImage(file);
     }
   };
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImage(e.target.files[0]);
-      handleImageUpload();
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    if (image) {
+      formData.append("image", image);
+      formData.append("upload_preset", "af4pgk3a");
+      try {
+        const res = await axios.post("/api/user/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(res.data);
+        setUpdateState((prev) => !prev);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -83,6 +92,10 @@ const ProfileTemplate: React.FC<ProfileTemplateType> = ({ user }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (image) handleImageUpload();
+  }, [image]);
 
   return (
     <div className="h-[20%] md:m-0 mx-auto w-11/12 rounded-md relative mt-4 bg-[#1E2875]">
