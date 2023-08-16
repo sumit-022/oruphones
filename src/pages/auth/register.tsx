@@ -3,8 +3,10 @@ import InputGroup from "@/components/atoms/input/group";
 import RegisterFormPartOne from "@/components/forms/register_one";
 import axios from "axios";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 const Register = () => {
+  const router = useRouter();
   const [user, setUser] = useState<{
     firstName: string;
     lastName: string;
@@ -35,15 +37,19 @@ const Register = () => {
       alert("Passwords do not match");
     } else {
       axios
-          .post("/api/register", {
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              password: user.password,
-              phone: user.phoneNumber,
+        .post("/api/register", {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          phone: user.phoneNumber,
         })
         .then((res) => {
-          console.log(res);
+          if (res.data.success) {
+            router.push("/auth/login");
+          } else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => console.log(err));
     }
